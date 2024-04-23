@@ -1,0 +1,23 @@
+@media screen and (min-width:480px) {
+  body {
+    background: var(--bg-primary);
+  }
+
+  .container {
+    position: relative;
+    width: var(--breakpoint);
+    min-height: 100vh;
+    margin: 0 auto;
+    border: 1px solid #fff;
+  }
+
+  .header,
+  .modal {
+    max-width: var(--breakpoint);
+  }
+
+}
+
+.content {
+  padding: 100px 24px 0;
+}

@@ -1,0 +1,19 @@
+:root {
+  --breakpoint: 480px;
+  
+  --bg-primary: #1B262C;
+  --bg-secondary: #24343D;
+  --bg-tertiary: rgba(31,45,52,0.43);
+  --bg-default: #24353E;
+  
+  --bg-gradient: linear-gradient(to right, #3A5E72, #5C93B1);
+
+  --txt-primary: #fff; 
+  --txt-secondary: #a6b6bd; 
+  --txt-tertiary: #626f76; 
+  --txt-gradient: linear-gradient(to right, #caecff, #78cfff);
+}
+
+/* background: linear-gradient(to right, #fbcac9, #8ca6ce);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent; */

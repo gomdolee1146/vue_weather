@@ -1,18 +1,18 @@
-// import Vue from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
-// import ReadComponent from '../components/ReadComponent'
+import MainView from '../views/mainView';
+import DetailView from '../views/detailView';
 
 const routes = [
-  // {
-  //   path: '/',
-  //   component: ''
-  // }
-]
+  { path: '/', redirect: '/main' },
+  { path: '/main', component: MainView },
+  { path: '/detail', component: DetailView },
+];
 
+// 라우터 생성
 const router = createRouter({
   history: createWebHistory(),
-  routes
-})
+  routes,
+});
 
-export {router}
+export { router };

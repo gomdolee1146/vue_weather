@@ -1,0 +1,102 @@
+/* 모달 영역 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  height: 100vh;
+  transform: translateX(-50%);
+  z-index: 2000;
+}
+
+.modal__bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+}
+
+.modal__wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 400px;
+  min-height: 40px;
+  border-radius: 20px;
+  background: #fff;
+  transform: translate(-50%, -50%);
+}
+
+/* 아이콘 영역 */
+.ico {
+  display: block;
+  width: 24px;
+  height: 24px;
+  transition: all .4s ease;
+}
+
+.ico-chevron_w {
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 50 50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M32.0625 13L18 25.5L32.0625 38' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / auto 28px;
+}
+
+.ico-xmark_w {
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 50 50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M15.9882 13.4421C15.4059 12.8528 14.4618 12.8528 13.8795 13.4421C13.2971 14.0313 13.2971 14.9866 13.8795 15.5759L23.4085 25.2182L13.4369 35.3084C12.8545 35.8976 12.8545 36.853 13.4369 37.4422C14.0192 38.0314 14.9633 38.0314 15.5456 37.4422L25.5172 27.352L35.3294 37.2808C35.9117 37.8701 36.8559 37.8701 37.4382 37.2808C38.0205 36.6916 38.0205 35.7362 37.4382 35.147L27.626 25.2182L36.9956 15.7372C37.5779 15.148 37.5779 14.1927 36.9956 13.6034C36.4133 13.0142 35.4691 13.0142 34.8868 13.6034L25.5172 23.0844L15.9882 13.4421Z' fill='%23fff'/%3E%3C/svg%3E") no-repeat center / auto 100%;
+}
+
+.ico-search_w {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cpath stroke='%23fff' stroke-linecap='round' stroke-width='2' d='m20 20-6-6'/%3E%3Cpath stroke='%23fff' stroke-width='2' d='M15 9.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Z'/%3E%3C/svg%3E") no-repeat center / auto 100%;
+}
+
+/* 버튼 영역 */
+.btn-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+}
+
+.btn-circle:hover i {
+  transform: scale(1.2);
+}
+
+/* 트랜지션 */
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-down-leave-active {
+  position: absolute;
+  transition-delay: 0.25s;
+}
+
+.slide-down-enter,
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-30px);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-left-leave-active {
+  position: absolute;
+  transition-delay: 0.25s;
+}
+
+.slide-left-enter,
+.slide-left-enter-from,
+.slide-left-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}

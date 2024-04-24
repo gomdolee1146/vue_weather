@@ -3,7 +3,9 @@
     <div class="card__thumb"></div>
     <div class="card__wrap">
       <div class="card__txt">
-        <h4 class="card__title"><b>GWANGJU</b> 20℃</h4>
+        <h4 class="card__title">
+          <b>{{ cityName }}</b> 20℃
+        </h4>
         <p class="card__desc">wind speed 11.5km/h</p>
         <p class="card__info">Cloudy</p>
       </div>
@@ -12,8 +14,40 @@
 </template>
 
 <script>
+import { getLocalInfo } from '@/data/localList';
+
 export default {
   name: 'weatherCard',
+  data() {
+    return {
+      baseURL: '',
+      lat: '',
+      lon: '',
+    };
+  },
+  props: {
+    cityName: { type: String, default: '' },
+  },
+  methods: {
+    showWeather() {
+    },
+    async getInfo() {
+      console.log(0)
+      const res = await getLocalInfo(this.cityName);
+      console.log(1)
+      this.lat = res.lat;
+      this.lon = res.lon;
+      // console.log('methods:', this.lat)
+    }
+  },
+  mounted() {
+    console.log(2)
+    this.getInfo()
+    console.log(3)
+
+      // console.log('mounted:', this.lat)
+    this.showWeather()
+  },
 };
 </script>
 

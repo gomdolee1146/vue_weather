@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 const config = {
-  url_base: 'https://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid=',
-  api_key: '0496489bb3e458c3cd4b86ee4da8e917',
+  url_base: 'https://api.openweathermap.org/geo/1.0/direct?q=Seoul&limit=5&appid=',
+  api_key: process.env.VUE_APP_API_KEY,
 };
 const baseURL = config.url_base + config.api_key;
+const API_KEY = config.api_key;
 
 const fetchWeather = () => {
   axios.get(`${baseURL}`).then((result) => {
@@ -12,4 +13,9 @@ const fetchWeather = () => {
   });
 };
 
-export { fetchWeather };
+export { fetchWeather, API_KEY };
+
+// 이 지역의 오늘 날씨를 시간대별로
+// 이 지역의 이번 주 날씨
+// 여러 지역의 현재 날씨
+// 

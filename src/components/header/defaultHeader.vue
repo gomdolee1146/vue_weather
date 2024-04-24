@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header__wrap">
-      <div class="header__btn">
+      <div class="header__btn" @click="gotoBack">
         <button class="btn-circle">
           <i class="ico ico-chevron_w"></i>
         </button>
@@ -48,6 +48,9 @@ export default {
         this.isShowInput = this.isShowModal;
       })
     },
+    gotoBack(){
+      this.$router.back()
+    }
   },
 };
 </script>

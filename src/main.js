@@ -1,8 +1,11 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
+import _ from 'lodash';
 
-import { router } from './router/index.js'
+import { router } from './router/index.js';
 
-const app = createApp(App)
-app.use(router)  
-app.mount('#app')
+const app = createApp(App);
+app.config.globalProperties.$_ = _;
+
+app.use(router);
+app.mount('#app');

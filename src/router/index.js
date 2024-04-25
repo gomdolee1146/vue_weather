@@ -5,8 +5,16 @@ import DetailView from '../views/detailView';
 
 const routes = [
   { path: '/', redirect: '/main' },
-  { path: '/main', component: MainView, name: 'main' },
-  { path: '/detail', component: DetailView, name: 'detail' },
+  {
+    path: '/main',
+    component: MainView,
+    name: 'main',
+  },
+  {
+    path: '/detail/:city',
+    component: DetailView,
+    name: 'detail',
+  },
 ];
 
 // 라우터 생성

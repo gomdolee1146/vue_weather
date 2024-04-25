@@ -1,52 +1,73 @@
 <template>
-  <div class="card">
-    <div class="card__thumb"></div>
-    <div class="card__wrap">
-      <div class="card__txt">
-        <h4 class="card__title">
-          <b>{{ cityName }}</b> 20℃
-        </h4>
-        <p class="card__desc">wind speed 11.5km/h</p>
-        <p class="card__info">Cloudy</p>
+  <div class="card" :class="{ brief: isShowBrief }">
+    <template v-if="isShowBrief">
+      <div class="card__title">{{ cityName }}</div>
+      <div class="card__thumb">
+        <img :src="iconUrl" />
       </div>
-    </div>
+      <div class="card__txt">{{ temperature }}℃</div>
+      <div class="card__box">
+        <p>Precipitations</p>
+        <p>Max: {{ temperatureMax }}℃&nbsp;&nbsp;Min: {{ temperatureMin }}℃</p>
+      </div>
+    </template>
+    <template v-else>
+      <div class="card__thumb">
+        <img :src="iconUrl" />
+      </div>
+      <div class="card__wrap">
+        <div class="card__txt">
+          <h4 class="card__title">
+            <b>{{ cityName }}</b> {{ temperature }}℃
+          </h4>
+          <p class="card__desc">wind speed {{ windSpeed }}km/h</p>
+          <p class="card__info">{{ weatherName }}</p>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-import { getLocalInfo } from '@/data/localList';
+import { getWeatherInfo } from '@/api';
+import { setIconImage } from '@/mixins';
 
 export default {
   name: 'weatherCard',
   data() {
     return {
       baseURL: '',
-      lat: '',
-      lon: '',
+      weatherName: '',
+      windSpeed: '',
+      temperature: '',
+      temperatureMin: '',
+      temperatureMax: '',
+      iconName: '',
+      iconUrl: '',
     };
   },
   props: {
+    isShowBrief: { type: Boolean, default: false },
     cityName: { type: String, default: '' },
   },
   methods: {
-    showWeather() {
-    },
     async getInfo() {
-      console.log(0)
-      const res = await getLocalInfo(this.cityName);
-      console.log(1)
-      this.lat = res.lat;
-      this.lon = res.lon;
-      // console.log('methods:', this.lat)
-    }
+      const res = await getWeatherInfo(this.cityName);
+
+      this.weatherName = this.$_.lowerCase(res.weather[0].main);
+      this.windSpeed = res.wind.speed;
+      this.iconName = res.weather[0].icon;
+      this.temperature = this.$_.ceil(res.main.temp - 273, 2);
+      this.temperatureMin = this.$_.ceil(res.main.temp_min - 273, 2);
+      this.temperatureMax = this.$_.ceil(res.main.temp_max - 273, 2);
+
+      this.$nextTick(() => {
+        this.iconUrl = setIconImage(this.iconName)
+      })
+    },
   },
   mounted() {
-    console.log(2)
-    this.getInfo()
-    console.log(3)
-
-      // console.log('mounted:', this.lat)
-    this.showWeather()
+    this.getInfo();
   },
 };
 </script>
@@ -55,19 +76,28 @@ export default {
 .card {
   position: relative;
   width: 100%;
-  padding: 80px 0 0;
-  border: 1px solid #c00;
+  padding: 40px 0 0;
+}
+.card.brief {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
 }
 .card__thumb {
+  display: flex;
+  justify-content: flex-end;
   position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 80px;
-  width: 40%;
-  max-width: 160px;
-  border: 1px solid blue;
+  top: 0px;
+  right: 16px;
+  width: 100px;
   aspect-ratio: 1/1;
   z-index: 1;
+}
+
+.brief .card__thumb {
+  position: static;
 }
 
 .card__wrap {
@@ -81,11 +111,13 @@ export default {
   margin-bottom: 4px;
   font-size: 24px;
 }
-
+.card__box p {
+  margin-top: 16px;
+  text-align: center;
+}
 .card__desc {
   font-size: 18px;
 }
-
 .card__info {
   font-size: 18px;
   color: var(--txt-secondary);

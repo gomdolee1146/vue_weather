@@ -2,26 +2,61 @@
   <div class="card">
     <div class="card__title">
       <h4>Today</h4>
-      <span>3 Mar, 2024</span>
+      <span>{{ getTodayDate() }}</span>
     </div>
     <div class="card__wrap">
       <div
         class="card__box"
-        v-for="(item, idx) in 4"
+        v-for="(weather, idx) in todayWeatherInfo"
         :key="idx"
         :class="{ active: idx === 2 }"
       >
-        <p class="card__txt">20℃</p>
-        <div class="card__thumb"></div>
-        <p class="card__txt">15:00</p>
+        <p class="card__txt">{{ this.$_.ceil(weather.main.temp - 273, 2) }}℃</p>
+        <div class="card__thumb">
+          <img :src="getIconImage(weather.weather[0].icon)" />
+        </div>
+        <p class="card__txt">{{ new Date(weather.dt * 1000).getHours() + ':00' }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getTodayInfo } from '@/api';
+import { setIconImage } from '@/mixins';
+
 export default {
   name: 'todayCard',
+  data() {
+    return {
+      todayWeatherInfo: [],
+      temperature: '',
+      time: '',
+      iconName: '',
+      iconUrl: '',
+    };
+  },
+  props: {
+    cityName: { type: String, default: '' },
+  },
+  methods: {
+    async getInfo() {
+      let res = await getTodayInfo(this.cityName);
+      this.todayWeatherInfo = this.$_.slice(res, 0, 4);
+    },
+    getIconImage(icon) {
+      return setIconImage(icon);
+    },
+    getTodayDate() {
+      const date = new Date();
+      return `${date.getDate()} ${date.toLocaleString('en-En', {
+        month: 'short',
+      })}, ${date.getFullYear()}`;
+    },
+  },
+  mounted() {
+    this.getInfo();
+  },
 };
 </script>
 
@@ -64,7 +99,7 @@ export default {
 .card__box.active {
   border: 1px solid var(--txt-tertiary);
   border-radius: 16px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .card__txt {
@@ -74,7 +109,11 @@ export default {
   display: block;
   width: 100%;
   margin-bottom: 16px;
-  border: 1px solid #fff;
   aspect-ratio: 1/1;
+}
+.card__thumb img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
 }
 </style>

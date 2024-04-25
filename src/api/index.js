@@ -13,9 +13,32 @@ const fetchWeather = () => {
   });
 };
 
-export { fetchWeather, API_KEY };
+const getLocalInfo = (cityName) => {
+  let baseURL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${API_KEY}`;
+  return axios.get(baseURL).then((res) => {
+    let lat = res.data[0].lat.toFixed(2),
+      lon = res.data[0].lon.toFixed(2);
+    return { lat, lon };
+  });
+};
 
-// 이 지역의 오늘 날씨를 시간대별로
-// 이 지역의 이번 주 날씨
-// 여러 지역의 현재 날씨
-// 
+const getWeatherInfo = (cityName) => {
+  let baseURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}`;
+  return axios.get(baseURL).then((res) => {
+    return res.data;
+  });
+};
+
+const getTodayInfo = (cityName) => {
+  let baseURL = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}`;
+  return axios.get(baseURL).then((res) => {
+    return res.data.list
+  });
+};
+
+const getWeeklyInfo = (cityName) => {
+  let baseURL = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}`;
+  return baseURL
+};
+
+export { fetchWeather, getLocalInfo, getWeatherInfo, getWeeklyInfo, getTodayInfo };

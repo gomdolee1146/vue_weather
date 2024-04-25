@@ -3,6 +3,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'App',
   components: {},
@@ -12,6 +13,6 @@ export default {
       weather: {},
     };
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>

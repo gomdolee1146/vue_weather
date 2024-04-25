@@ -22,7 +22,7 @@ body {
   line-height: 1.25;
   background: var(--bg-primary);
   font-size: 16px;
-  letter-spacing: -.08em;
+  letter-spacing: -.02em;
   font-family: "SUIT", "Malgun Gothic", Helvetica, sans-serif !important;
 }
 

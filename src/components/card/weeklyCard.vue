@@ -2,17 +2,20 @@
   <div class="card">
     <div class="card__title">
       <h4>Next Forecast</h4>
-      <span>아마아이콘</span>
     </div>
     <div class="card__wrap">
       <ul class="card__list">
-        <li class="card__lst">
+        <li class="card__lst" v-for="(weather, idx) in weeklyWeatherInfo" :key="idx">
           <div class="card__box">
-            <div class="card__txt">Monday</div>
-            <div class="card__thumb"></div>
+            <div class="card__txt">{{ getWeekday(weather.dt) }}</div>
+            <div class="card__thumb">
+              <img :src="getIconImage(weather.weather[0].icon)" />
+            </div>
             <div class="card__info">
-              <p>13℃</p>
-              <p class="card__desc">10℃</p>
+              <p>{{ this.$_.round(weather.main.temp_max - 273, 0) }}℃</p>
+              <p class="card__desc">
+                {{ this.$_.round(weather.main.temp_min - 273, 0) }}℃
+              </p>
             </div>
           </div>
         </li>
@@ -22,11 +25,41 @@
 </template>
 
 <script>
+import { getWeeklyInfo } from '@/api';
+import { weekDay } from '@/data';
+import { setIconImage } from '@/mixins';
+
 export default {
   name: 'weeklyCard',
-
-  mounted() {},
-  methods: {},
+  data() {
+    return {
+      weeklyWeatherInfo: [],
+      weeklyDate: '',
+    };
+  },
+  props: {
+    cityName: { type: String, default: '' },
+  },
+  methods: {
+    async getInfo() {
+      let res = await getWeeklyInfo(this.cityName);
+      let num = [0, 8, 16, 24, 32];
+      num.forEach((el) => {
+        this.weeklyWeatherInfo.push(this.$_.nth(res, el));
+      });
+    },
+    getWeekday(txt) {
+      let day = new Date(txt * 1000).getDay();
+      let weekday = weekDay[day];
+      return weekday;
+    },
+    getIconImage(icon) {
+      return setIconImage(icon);
+    },
+  },
+  mounted() {
+    this.getInfo();
+  },
 };
 </script>
 
@@ -52,25 +85,27 @@ export default {
   font-size: 15px;
 }
 
-.card__wrap {
-}
-
 .card__box {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   position: relative;
   padding: 32px 16px;
+  font-size: 20px;
 }
 .card__thumb {
   display: block;
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 30px;
-  height: 30px;
-  border: 1px solid #0c0;
+  width: 40px;
+  height: 40px;
   transform: translate(-50%, -50%);
+}
+.card__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .card__info {

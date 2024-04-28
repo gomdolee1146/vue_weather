@@ -11,7 +11,7 @@
         :key="idx"
         :class="{ active: idx === 2 }"
       >
-        <p class="card__txt">{{ this.$_.ceil(weather.main.temp - 273, 2) }}℃</p>
+        <p class="card__txt">{{ this.$_.round(weather.main.temp - 273, 2) }}℃</p>
         <div class="card__thumb">
           <img :src="getIconImage(weather.weather[0].icon)" />
         </div>

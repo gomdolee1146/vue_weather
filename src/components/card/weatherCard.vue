@@ -57,9 +57,9 @@ export default {
       this.weatherName = this.$_.lowerCase(res.weather[0].main);
       this.windSpeed = res.wind.speed;
       this.iconName = res.weather[0].icon;
-      this.temperature = this.$_.ceil(res.main.temp - 273, 2);
-      this.temperatureMin = this.$_.ceil(res.main.temp_min - 273, 2);
-      this.temperatureMax = this.$_.ceil(res.main.temp_max - 273, 2);
+      this.temperature = this.$_.round(res.main.temp - 273, 2);
+      this.temperatureMin = this.$_.round(res.main.temp_min - 273, 2);
+      this.temperatureMax = this.$_.round(res.main.temp_max - 273, 2);
 
       this.$nextTick(() => {
         this.iconUrl = setIconImage(this.iconName)

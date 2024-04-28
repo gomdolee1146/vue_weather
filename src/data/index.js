@@ -17,4 +17,14 @@ const localName = [
   'Jeju',
 ];
 
-export { localName };
+const weekDay = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+export { localName, weekDay };

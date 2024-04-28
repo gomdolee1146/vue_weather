@@ -4,7 +4,7 @@
   <div class="content">
     <weather-card :cityName="cityName" isShowBrief></weather-card>
     <today-card :cityName="cityName"></today-card>
-    <weekly-card></weekly-card>
+    <weekly-card :cityName="cityName"></weekly-card>
   </div>
 </template>
 

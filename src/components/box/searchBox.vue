@@ -1,11 +1,13 @@
 <template>
   <div class="search">
     <ul class="search__list" v-if="isErrorType === 0">
-      <li class="search__lst">
-        <div class="search__box">
-          <!-- <h4 class="search__title">{{ weather }}</h4> -->
-          <div class="search__icon"></div>
-        </div>
+      <li class="search__lst" v-for="(city, idx) in cityNameList" :key="idx">
+        <router-link :to="{ name: 'detail', params: { city: city } }">
+          <div class="search__box">
+            <h4 class="search__title">{{ city }}</h4>
+            <div class="search__icon"></div>
+          </div>
+        </router-link>
       </li>
     </ul>
     <div class="search__rslt" v-else>
@@ -15,13 +17,13 @@
 </template>
 
 <script>
-// import { getWeatherInfo } from '@/api';
+import { getWeatherInfo } from '@/api';
 
 export default {
   name: 'searchBox',
   data() {
     return {
-      weatherInfo: [],
+      test: [],
     };
   },
   props: {
@@ -39,19 +41,28 @@ export default {
           break;
       }
     },
-    // getInfo() {
-    //   if (this.cityNameList.length === 0) return;
-    //   this.weatherInfo = this.cityNameList.forEach(async (el) => {
-    //     await getWeatherInfo(el);
-    //   });
-    //   console.log(this.weatherInfo)
-    //   // this.weatherInfo = await this.$_.map(this.cityNameList, getWeatherInfo())
-    //   // return this.weatherInfo
-    // },
+    getInfo() {
+      if (this.cityNameList.length === 0) return;
+
+      let weatherInfo = [];
+      new Promise((resolve) => {
+        this.$_.map(this.cityNameList, async (el) => {
+          let res = await getWeatherInfo(el);
+          weatherInfo.push(res)
+          resolve(res);
+        });
+      })
+      console.log(weatherInfo)
+      // this.saveContent(weatherInfo)
+    },
   },
-  mounted() {
-    console.log('gg', this.cityNameList);
-    // this.getInfo();
+  mounted() {},
+  updated() {
+    // console.log('gg', this.cityNameList);
+    this.getInfo();
+    this.$nextTick(() => {
+   
+    })
   },
 };
 </script>
@@ -67,8 +78,6 @@ export default {
   box-sizing: border-box;
 }
 
-.search__list {
-}
 .search__lst {
   width: 100%;
   padding: 16px 0;
@@ -95,7 +104,6 @@ export default {
   right: 24px;
   width: 40px;
   height: 40px;
-  border: 1px solid #fff;
   transform: translateY(-50%);
 }
 .search__rslt {

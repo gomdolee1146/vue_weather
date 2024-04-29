@@ -1,11 +1,12 @@
 <template>
-  <default-header></default-header>
-
-  <div class="content">
-    <weather-card :cityName="cityName" isShowBrief></weather-card>
-    <today-card :cityName="cityName"></today-card>
-    <weekly-card :cityName="cityName"></weekly-card>
-  </div>
+  <default-header :isShowSearch="false"></default-header>
+  <transition name="fade">
+    <div class="content" v-if="show">
+      <weather-card :cityName="cityName" isShowBrief></weather-card>
+      <today-card :cityName="cityName"></today-card>
+      <weekly-card :cityName="cityName"></weekly-card>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -19,11 +20,14 @@ export default {
   components: { defaultHeader, todayCard, weeklyCard, weatherCard },
   data() {
     return {
-      cityName : this.$route.params.city
-    }
+      cityName: this.$route.params.city,
+      show: false,
+    };
   },
-  mounted(){
-  }
+  mounted() {
+    this.show = true;
+    document.body.style.overflow = 'visible'
+  },
 };
 </script>
 

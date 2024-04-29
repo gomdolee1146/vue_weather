@@ -14,23 +14,25 @@
       </div>
     </div>
   </header>
-  <!-- isShowModal, isShowInput -->
-  <div class="modal" v-if="true">
+  <!--isShowModal , isShowInput -->
+  <div class="modal" v-if="isShowModal">
     <div class="modal__bg" @click="toggleModal"></div>
     <transition name="slide-left" mode="out-in">
-      <div class="header__search_wrap" v-if="true" :duration="550">
-        <div class="header__search">
-          <input
-            type="text"
-            placeholder="지역명을 검색하세요."
-            v-model="addrInfo"
-            @input="searchWeather($event)"
-          />
-          <button class="btn-circle">
-            <i class="ico ico-search_w"></i>
-          </button>
-        </div>
-        <search-box :isErrorType="isErrorType" :cityNameList="cityNameList"></search-box>
+      <div class="header__search" v-if="isShowInput">
+        <input
+          type="text"
+          placeholder="지역명을 검색하세요."
+          v-model="addrInfo"
+          @input="searchWeather($event)"
+        />
+        <button class="btn-circle" @click="removeContent">
+          <i class="ico ico-xmark_w" v-if="addrInfo !== ''"></i>
+        </button>
+        <search-box
+          :isErrorType="isErrorType"
+          :cityNameList="cityNameList"
+          v-if="isShowInput"
+        ></search-box>
       </div>
     </transition>
   </div>
@@ -63,7 +65,7 @@ export default {
 
       if (text === '') {
         this.isErrorType = 2;
-        return
+        return;
       }
       if (chkEng.test(text) === true) {
         this.isErrorType = 0;
@@ -83,6 +85,15 @@ export default {
       this.$nextTick(() => {
         this.isShowInput = this.isShowModal;
       });
+      if (this.isShowModal === true ){
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'visible'
+      }
+    },
+    removeContent() {
+      if (this.addrInfo === '') return;
+      if (this.addrInfo !== '') this.addrInfo = '';
     },
     gotoBack() {
       this.$router.back();
@@ -120,22 +131,19 @@ export default {
   color: #fff;
   text-align: center;
 }
-.header__search_wrap {
-  position: fixed;
-  top: 36px;
-  width: 100%;
-  height: 100vh;
-  padding: 0 24px;
-  box-sizing: border-box;
-  z-index: 2;
-}
 
 .header__search {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  position: fixed;
+  top: 36px;
+  left: 50%;
+  width: calc(100% - 48px);
   height: 48px;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  z-index: 2;
 }
 .header__search input {
   flex: 1 1 auto;
@@ -149,5 +157,22 @@ export default {
 .header__search button {
   flex: 0 0 auto;
   border-radius: 0 24px 24px 0;
+}
+.btn-default {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 0 !important;
+  background: var(--bg-secondary);
+}
+.search {
+  position: fixed;
+  top: 42px;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 </style>

@@ -84,6 +84,7 @@ export default {
       this.isShowModal = !this.isShowModal;
       this.$nextTick(() => {
         this.isShowInput = this.isShowModal;
+        this.addrInfo = '';
       });
       if (this.isShowModal === true ){
         document.body.style.overflow = 'hidden'

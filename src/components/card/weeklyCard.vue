@@ -5,6 +5,16 @@
     </div>
     <div class="card__wrap">
       <ul class="card__list">
+        <li class="card__lst">
+          <div class="card__box card__box-first">
+            <div class="card__txt">WEEKDAY</div>
+            <div class="card__thumb">WEATHER</div>
+            <div class="card__info">
+              <p>MAX</p>
+              <p class="card__desc">MIN</p>
+            </div>
+          </div>
+        </li>
         <li class="card__lst" v-for="(weather, idx) in weeklyWeatherInfo" :key="idx">
           <div class="card__box">
             <div class="card__txt">{{ getWeekday(weather.dt) }}</div>
@@ -43,7 +53,7 @@ export default {
   methods: {
     async getInfo() {
       let res = await getWeeklyInfo(this.cityName);
-      let num = [0, 8, 16, 24, 32];
+      let num = [0, 8, 16, 24, 32]; // 주간 날씨 - 0시 기준 날씨를 출력하기 위한 숫자.
       num.forEach((el) => {
         this.weeklyWeatherInfo.push(this.$_.nth(res, el));
       });
@@ -93,6 +103,14 @@ export default {
   padding: 32px 16px;
   font-size: 20px;
 }
+.card__box-first {
+  font-size: 16px;
+}
+
+.card__box-first .card__thumb {
+  width: max-content;
+  height: inherit;
+}
 .card__thumb {
   display: block;
   position: absolute;
@@ -118,6 +136,7 @@ export default {
   transform: translateY(-50%);
 }
 .card__info p {
+  min-width: 52px;
   padding: 0 4px;
 }
 .card__desc {

@@ -9,9 +9,9 @@
         class="card__box"
         v-for="(weather, idx) in todayWeatherInfo"
         :key="idx"
-        :class="{ active: idx === 2 }"
+        :class="{ active: idx === 0 }"
       >
-        <p class="card__txt">{{ this.$_.round(weather.main.temp - 273, 2) }}℃</p>
+        <p class="card__txt">{{ this.$_.round(weather.main.temp - 273, 0) }}℃</p>
         <div class="card__thumb">
           <img :src="getIconImage(weather.weather[0].icon)" />
         </div>

@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="header__wrap">
-      <div class="header__btn" @click="gotoBack">
+      <div class="header__btn" @click="gotoBack" v-if="this.$route.name !== 'main'">
         <button class="btn-circle">
           <i class="ico ico-chevron_w"></i>
         </button>
@@ -29,7 +29,7 @@
           <i class="ico ico-xmark_w" v-if="addrInfo !== ''"></i>
         </button>
         <search-box
-          :isErrorType="isErrorType"
+          :errorType="errorType"
           :cityNameList="cityNameList"
           v-if="isShowInput"
         ></search-box>
@@ -53,7 +53,7 @@ export default {
     return {
       isShowModal: false,
       isShowInput: false,
-      isErrorType: 0,
+      errorType: 'default',
       cityNameList: [],
       addrInfo: '',
     };
@@ -63,12 +63,16 @@ export default {
       const chkEng = /^[a-zA-Z]+$/;
       const text = event.target.value;
 
+      // 텍스트가 비어있는지 확인
       if (text === '') {
-        this.isErrorType = 2;
+        this.errorType = 'city';
+        this.cityNameList = [];
         return;
       }
+
+      // 영문으로 작성되었을 경우,
       if (chkEng.test(text) === true) {
-        this.isErrorType = 0;
+        this.errorType = 'none';
         // cityNameList 추출하기
         this.cityNameList = this.$_.chain(localName)
           .filter((name) => {
@@ -76,7 +80,8 @@ export default {
           })
           .value();
       } else {
-        this.isErrorType = 1;
+        // 영문으로 작성되어있지 않을 때,
+        this.errorType = 'eng';
         this.cityNameList = [];
       }
     },
@@ -86,15 +91,16 @@ export default {
         this.isShowInput = this.isShowModal;
         this.addrInfo = '';
       });
-      if (this.isShowModal === true ){
-        document.body.style.overflow = 'hidden'
+      if (this.isShowModal === true) {
+        document.body.style.overflow = 'hidden';
       } else {
-        document.body.style.overflow = 'visible'
+        document.body.style.overflow = 'visible';
       }
     },
     removeContent() {
-      if (this.addrInfo === '') return;
-      if (this.addrInfo !== '') this.addrInfo = '';
+      this.addrInfo = ''
+      this.errorType = 'city';
+      this.cityNameList = [];
     },
     gotoBack() {
       this.$router.back();

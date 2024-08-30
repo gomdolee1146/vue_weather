@@ -13,6 +13,8 @@ export default {
       weather: {},
     };
   },
-  methods: {}
+  created() {
+    document.title = 'Portfolio :: weather'
+  }
 }
 </script>

@@ -7,7 +7,6 @@
       </div>
       <div class="card__txt">{{ temperature }}℃</div>
       <div class="card__box">
-        <p>Precipitations</p>
         <p>Max: {{ temperatureMax }}℃&nbsp;&nbsp;Min: {{ temperatureMin }}℃</p>
       </div>
     </template>
@@ -62,8 +61,8 @@ export default {
       this.temperatureMax = this.$_.round(res.main.temp_max - 273, 2);
 
       this.$nextTick(() => {
-        this.iconUrl = setIconImage(this.iconName)
-      })
+        this.iconUrl = setIconImage(this.iconName);
+      });
     },
   },
   mounted() {
@@ -107,6 +106,9 @@ export default {
   border-radius: 20px;
   background: var(--bg-default);
 }
+.card__wrap:hover {
+  background: var(--bg-tertiary);
+}
 .card__title {
   margin-bottom: 4px;
   font-size: 24px;
@@ -116,10 +118,22 @@ export default {
   text-align: center;
 }
 .card__desc {
-  font-size: 18px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--txt-secondary);
 }
 .card__info {
-  font-size: 18px;
-  color: var(--txt-secondary);
+  display: inline-block;
+  position: absolute;
+  bottom: 24px;
+  right: 16px;
+  min-width: 100px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bg-default);
+  text-align: center;
 }
 </style>

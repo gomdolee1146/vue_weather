@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <ul class="search__list" v-if="isErrorType === 0">
+    <ul class="search__list" v-if="errorType === 'none'">
       <li class="search__lst" v-for="(city, idx) in weatherInfo" :key="idx">
         <router-link :to="{ name: 'detail', params: { city: city.name } }">
           <div class="search__box">
@@ -26,24 +26,23 @@ export default {
   name: 'searchBox',
   data() {
     return {
-      test: [],
       weatherInfo: [],
     };
   },
   props: {
     cityNameList: { type: Array, default: () => [] },
-    isErrorType: { type: Number, default: 0 },
+    errorType: { type: String, default: 'default' },
   },
   methods: {
     getRsltTxt() {
-      switch (this.isErrorType) {
-        case 1:
-          return '영문명으로 입력해주세요.';
-        case 2:
-          return '지역명을 입력해주세요.';
-        default:
-          break;
-      }
+      // 검색결과 영역에 검색 안내 문구 출력
+      const errorTxt = {
+        eng: '영문명으로 입력해주세요.',
+        city: '지역명을 입력해주세요.',
+        default: '검색어를 입력해주세요.',
+        none: '',
+      };
+      return errorTxt[this.errorType];
     },
     getIconImage(icon) {
       return setIconImage(icon);
@@ -52,17 +51,20 @@ export default {
   mounted() {},
   watch: {
     cityNameList: {
+      // 입력된 도시 이름 변경시에 도시명 출력하기
       deep: true,
       handler() {
-        if (this.cityNameList.length === 0) return;
-
-        new Promise((resolve) => {
-          this.$_.map(this.cityNameList, async (el) => {
-            let res = await getWeatherInfo(el);
-            this.weatherInfo.push(res);
-            resolve(res);
+        if (this.cityNameList.length === 0) {
+          this.weatherInfo = [];
+        } else {
+          new Promise((resolve) => {
+            this.$_.map(this.cityNameList, async (el) => {
+              let res = await getWeatherInfo(el);
+              this.weatherInfo.push(res);
+              resolve(res);
+            });
           });
-        });
+        }
       },
     },
   },

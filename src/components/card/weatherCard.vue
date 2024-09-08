@@ -29,10 +29,11 @@
 
 <script>
 import { getWeatherInfo } from '@/api';
-import { setIconImage } from '@/mixins';
+import { commonMixin } from '@/mixins/commonMixin';
 
 export default {
   name: 'weatherCard',
+  mixins: [commonMixin],
   data() {
     return {
       baseURL: '',
@@ -61,7 +62,7 @@ export default {
       this.temperatureMax = this.$_.round(res.main.temp_max - 273, 2);
 
       this.$nextTick(() => {
-        this.iconUrl = setIconImage(this.iconName);
+        this.iconUrl = this.setIconImage(this.iconName);
       });
     },
   },
@@ -105,6 +106,7 @@ export default {
   padding: 24px;
   border-radius: 20px;
   background: var(--bg-default);
+  transition: all 0.3s ease;
 }
 .card__wrap:hover {
   background: var(--bg-tertiary);

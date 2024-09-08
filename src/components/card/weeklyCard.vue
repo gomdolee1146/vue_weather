@@ -7,11 +7,10 @@
       <ul class="card__list">
         <li class="card__lst">
           <div class="card__box card__box-first">
-            <div class="card__txt">WEEKDAY</div>
-            <div class="card__thumb">WEATHER</div>
+            <div class="card__txt">요일</div>
+            <div class="card__thumb">날씨</div>
             <div class="card__info">
-              <p>MAX</p>
-              <p class="card__desc">MIN</p>
+              <p class="card__desc">기온</p>
             </div>
           </div>
         </li>
@@ -22,7 +21,7 @@
               <img :src="getIconImage(weather.weather[0].icon)" />
             </div>
             <div class="card__info">
-              <p>{{ this.$_.round(weather.main.temp_max - 273, 0) }}℃</p>
+              <!-- <p>{{ this.$_.round(weather.main.temp_max - 273, 0) }}℃</p> -->
               <p class="card__desc">
                 {{ this.$_.round(weather.main.temp_min - 273, 0) }}℃
               </p>
@@ -37,10 +36,11 @@
 <script>
 import { getWeeklyInfo } from '@/api';
 import { weekDay } from '@/data';
-import { setIconImage } from '@/mixins';
+import { commonMixin } from '@/mixins/commonMixin';
 
 export default {
   name: 'weeklyCard',
+  mixins: [commonMixin],
   data() {
     return {
       weeklyWeatherInfo: [],
@@ -64,7 +64,7 @@ export default {
       return weekday;
     },
     getIconImage(icon) {
-      return setIconImage(icon);
+      return this.setIconImage(icon);
     },
   },
   mounted() {
@@ -141,5 +141,6 @@ export default {
 }
 .card__desc {
   color: var(--txt-secondary);
+  text-align: right;
 }
 </style>

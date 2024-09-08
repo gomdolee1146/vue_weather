@@ -23,10 +23,11 @@
 
 <script>
 import { getTodayInfo } from '@/api';
-import { setIconImage } from '@/mixins';
+import { commonMixin } from '@/mixins/commonMixin';
 
 export default {
   name: 'todayCard',
+  mixins:[commonMixin],
   data() {
     return {
       todayWeatherInfo: [],
@@ -45,7 +46,7 @@ export default {
       this.todayWeatherInfo = this.$_.slice(res, 0, 4);
     },
     getIconImage(icon) {
-      return setIconImage(icon);
+      return this.setIconImage(icon);
     },
     getTodayDate() {
       const date = new Date();

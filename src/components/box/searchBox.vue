@@ -1,6 +1,9 @@
 <template>
   <div class="search">
-    <ul class="search__list" v-if="errorType === 'none'">
+    <div class="search__rslt" v-if="errorType !== 'none'">
+      <p>{{ getRsltTxt() }}</p>
+    </div>
+    <ul class="search__list" v-else>
       <li class="search__lst" v-for="(city, idx) in weatherInfo" :key="idx">
         <router-link :to="{ name: 'detail', params: { city: city.name } }">
           <div class="search__box">
@@ -12,40 +15,49 @@
         </router-link>
       </li>
     </ul>
-    <div class="search__rslt" v-else>
-      <p>{{ getRsltTxt() }}</p>
-    </div>
   </div>
 </template>
 
 <script>
 import { getWeatherInfo } from '@/api';
-import { setIconImage } from '@/mixins';
+import { commonMixin } from '@/mixins/commonMixin';
 
 export default {
   name: 'searchBox',
+  mixins: [commonMixin],
   data() {
     return {
       weatherInfo: [],
     };
   },
   props: {
+    inputTxt: { type: String, default: '' },
     cityNameList: { type: Array, default: () => [] },
     errorType: { type: String, default: 'default' },
   },
   methods: {
     getRsltTxt() {
-      // 검색결과 영역에 검색 안내 문구 출력
       const errorTxt = {
+        default: '검색어를 입력해주세요.',
         eng: '영문명으로 입력해주세요.',
         city: '지역명을 입력해주세요.',
-        default: '검색어를 입력해주세요.',
-        none: '',
+        none: '검색결과가 없습니다.',
       };
-      return errorTxt[this.errorType];
+
+      if (this.inputTxt === '') {
+        console.log('입력 x')
+        return errorTxt.default;
+      } else if (this.cityNameList === null && this.inputTxt !== '') {
+        console.log('입력 o, 결과 x')
+        console.log(this.cityNameList)
+        return errorTxt.none;
+      } else {
+        console.log('??')
+        return errorTxt[this.errorType];
+      }
     },
     getIconImage(icon) {
-      return setIconImage(icon);
+      return this.setIconImage(icon);
     },
   },
   mounted() {},

@@ -16,11 +16,15 @@ const routes = [
     name: 'detail',
   },
 ];
+const scrollBehavior = () => {
+  return { x: 0, y: 0 };
+};
 
 // 라우터 생성
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior,
 });
 
 export { router };

@@ -14,7 +14,6 @@
       </div>
     </div>
   </header>
-  <!--isShowModal , isShowInput -->
   <div class="modal" v-if="isShowModal">
     <div class="modal__bg" @click="toggleModal"></div>
     <transition name="slide-left" mode="out-in">
@@ -31,6 +30,7 @@
         <search-box
           :errorType="errorType"
           :cityNameList="cityNameList"
+          :inputTxt="addrInfo"
           v-if="isShowInput"
         ></search-box>
       </div>
@@ -76,7 +76,8 @@ export default {
         // cityNameList 추출하기
         this.cityNameList = this.$_.chain(localName)
           .filter((name) => {
-            return this.$_.includes(name, text);
+            const regex = new RegExp(text, 'i');
+            return regex.test(name);
           })
           .value();
       } else {
@@ -103,7 +104,7 @@ export default {
       this.cityNameList = [];
     },
     gotoBack() {
-      this.$router.back();
+      this.$router.go(-1);
     },
   },
 };

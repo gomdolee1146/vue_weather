@@ -72,7 +72,7 @@ export default {
 
       // 영문으로 작성되었을 경우,
       if (chkEng.test(text) === true) {
-        this.errorType = 'none';
+        this.errorType = 'list';
         // cityNameList 추출하기
         this.cityNameList = this.$_.chain(localName)
           .filter((name) => {

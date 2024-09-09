@@ -1,8 +1,14 @@
 <template>
   <div class="search">
-    <div class="search__rslt" v-if="errorType !== 'none'">
+    <div
+      class="search__rslt"
+      v-if="
+        errorType !== 'list' || (cityNameList.length === 0 && this.errorType === 'list')
+      "
+    >
       <p>{{ getRsltTxt() }}</p>
     </div>
+
     <ul class="search__list" v-else>
       <li class="search__lst" v-for="(city, idx) in weatherInfo" :key="idx">
         <router-link :to="{ name: 'detail', params: { city: city.name } }">
@@ -45,14 +51,10 @@ export default {
       };
 
       if (this.inputTxt === '') {
-        console.log('입력 x')
         return errorTxt.default;
-      } else if (this.cityNameList === null && this.inputTxt !== '') {
-        console.log('입력 o, 결과 x')
-        console.log(this.cityNameList)
+      } else if (this.cityNameList.length === 0 && this.errorType === 'list') {
         return errorTxt.none;
       } else {
-        console.log('??')
         return errorTxt[this.errorType];
       }
     },
@@ -66,17 +68,12 @@ export default {
       // 입력된 도시 이름 변경시에 도시명 출력하기
       deep: true,
       handler() {
-        if (this.cityNameList.length === 0) {
-          this.weatherInfo = [];
-        } else {
-          new Promise((resolve) => {
-            this.$_.map(this.cityNameList, async (el) => {
-              let res = await getWeatherInfo(el);
-              this.weatherInfo.push(res);
-              resolve(res);
-            });
-          });
-        }
+        this.weatherInfo = [];
+        if (this.cityNameList.length === 0) return;
+        this.$_.map(this.cityNameList, async (el) => {
+          let res = await getWeatherInfo(el);
+          this.weatherInfo.push(res);
+        });
       },
     },
   },
